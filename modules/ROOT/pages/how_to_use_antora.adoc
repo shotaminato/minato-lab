@@ -1,10 +1,7 @@
-:source-highlighter: highlight.js
-:icons:
-:sectnums:
+include::partial$template.adoc[]
 
 
-
-# Asciidoc + Antora で HP 自作
+# **Asciidoc + Antora で HP 自作**
 
 ## Install WSL
 Antoraを取り扱うのに都合がいいので、WSLをインストールします。
