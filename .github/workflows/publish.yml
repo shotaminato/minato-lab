@@ -21,20 +21,48 @@ jobs:
     steps:
     - name: Checkout repository
       uses: actions/checkout@v4
+
     - name: Configure Pages
       uses: actions/configure-pages@v5
+
     - name: Install Node.js
       uses: actions/setup-node@v4
       with:
         node-version: '18'
+
     - name: Install Antora
       run: npm i antora
+
     - name: Generate Site
       run: npx antora antora-playbook.yml
+
     - name: Upload Artifacts
       uses: actions/upload-pages-artifact@v3
       with:
         path: build/site
+
     - name: Deploy to GitHub Pages
       id: deployment
       uses: actions/deploy-pages@v4
+
+  sitemap_job:
+    runs-on: ubuntu-latest
+    name: Generate a sitemap
+
+    steps:
+    - name: Checkout the repo
+      uses: actions/checkout@v4
+      with:
+        fetch-depth: 0 
+
+    - name: Generate the sitemap
+      id: sitemap
+      uses: cicirello/generate-sitemap@v1
+      with:
+        base-url-path: https://shotaminato.github.io/minato-lab/minato-lab/how_to_use_antora.html
+
+    - name: Output stats
+      run: |
+        echo "sitemap-path = ${{ steps.sitemap.outputs.sitemap-path }}"
+        echo "url-count = ${{ steps.sitemap.outputs.url-count }}"
+        echo "excluded-count = ${{ steps.sitemap.outputs.excluded-count }}"
