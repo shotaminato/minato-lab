@@ -1,0 +1,9 @@
+= How to use Github Actions
+
+== Setup
+
+以下のページを参考に進めます。
+
+参考:: https://docs.github.com/ja/actions/writing-workflows/quickstart
+
+GitHub でリポジトリ内の GitHub Actions ワークフローを検出するには、ワークフロー ファイルを「.github/workflows」という名前のディレクトリに保存する必要があります。

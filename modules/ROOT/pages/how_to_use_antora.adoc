@@ -1,12 +1,17 @@
 :source-highlighter: highlight.js
+:icons:
+:sectnums:
 
-# 自作ホームページ開発メモ
+
+
+# Asciidoc + Antora で HP 自作
 
 ## Install WSL
 Antoraを取り扱うのに都合がいいので、WSLをインストールします。
-* 参考:: https://qiita.com/SBS_Takumi/items/f5f8a5934e00c7a7efb8
 
-[source,sh]
+参考:: https://qiita.com/SBS_Takumi/items/f5f8a5934e00c7a7efb8
+
+[%linenums,sh]
 ----
 $ wsl --install
 ----
@@ -28,7 +33,7 @@ Font Family に 'Source Han Code JP' とクオーテーション付きで指定�
 ## Install Chrome (WSL)
 自作サイトのプレビュー用に、WSLにchromeをインストールします。以下の手順に従って進めてください。
 
-[source,sh]
+[%linenums,sh]
 ----
 $ sudo apt update && sudo apt -y upgrade && sudo apt -y autoremove
 $ cd /path/to/workdir/
@@ -39,7 +44,7 @@ $ sudo apt -y install ./google-chrome-stable_current_amd64.deb
 
 以下のコマンドを打って、chromeのバージョンが表示されたら成功です。
 
-[source,sh]
+[%linenums,sh]
 ----
 google-chrome --version
 ----
@@ -50,6 +55,42 @@ google-chrome --version
 
 
 
+
+### 日本語化
+
+以上のインストール方法のみだと、日本語がインストールできていません。下記のサイトを参考に、WSL環境を日本語化します。
+
+[%linenums,sh]
+----
+$ sudo apt -y install language-pack-ja
+$ sudo update-locale LANG=ja_JP.UTF8
+$ sudo apt install fonts-ipafont
+$ sudo apt install fonts-ipaexfont
+$ fc-cache -fv
+----
+
+参考1:: https://windows-core.com/windows_feature/feature-52.php
+参考2:: https://lef237.hatenablog.com/entry/2022/12/05/163550
+
+参考2のようにフォントをインストールしないと、文字化けは治りません。
+
+このままだと、以下のエラーが出たため、修正します。
+
+----
+manpath: can't set the locale; make sure $LC_* and $LANG are correct wsl
+----
+
+以下のコマンドを実行して、地域設定を変更します。
+
+[%linenums,sh]
+----
+$ sudo dpkg-reconfigure locales 
+----
+
+操作方法は、`ja_JP.UTF8` 的な選択肢を二回程度選択すればOkです。
+
+参考:: https://gist.github.com/n3dst4/173e17ef502f7897582f9021135c3669
+
 ## Antora
 以下、このページを参考に進めていきます。
 
@@ -58,11 +99,14 @@ google-chrome --version
 
 
 
+
+
+
 ### Install Node.js
 
 以下のコマンドを打ってみます。バージョンが表示されたら、Node.jsはインストール済み。そうでなければ未インストールです。
 
-[source,sh]
+[%linenums,sh]
 ----
 $ node -v
 ----
@@ -73,7 +117,7 @@ nvmと呼ばれるバージョン管理ソフトがあるようなので、そ�
 参考ページ:: https://github.com/nvm-sh/nvm#installation-and-update
 
 .Install NVM
-[source,sh]
+[%linenums,sh]
 ----
 $ curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.40.1/install.sh | bash
 
@@ -82,7 +126,7 @@ $ export NVM_DIR="$([ -z "${XDG_CONFIG_HOME-}" ] && printf %s "${HOME}/.nvm" || 
 ----
 
 .Install Node.js
-[source,sh]
+[%linenums,sh]
 ----
 $ nvm install --lts
 $ node -v # Version 確認
@@ -97,7 +141,7 @@ $ nvm alias default v22.11.0 # 代わりにこのコマンドを打つ。これ�
 ### Install Antora
 
 .Install command
-[source,sh]
+[%linenums,sh]
 ----
 $ mkdir docs-site && cd docs-site
 $ node -e "fs.writeFileSync('package.json', '{}')"
@@ -105,7 +149,7 @@ $ npm i -D -E antora # ここで Warning が出た。
 ----
 
 .Warning
-[source,sh]
+[%linenums,sh]
 ----
 npm warn deprecated inflight@1.0.6: This module is not supported, and leaks memory. Do not use it. Check out lru-cache if you want a good and tested way to coalesce async requests by a key value, which is much more comprehensive and powerful.
 npm warn deprecated glob@7.1.3: Glob versions prior to v9 are no longer supported
@@ -121,7 +165,7 @@ npm warn deprecated glob@7.1.3: Glob versions prior to v9 are no longer supporte
 自作サイトを作るためには、Antoraの設定ファイル（playbook）を作成する必要があるらしいです。先ほど作った `docs-site` ディレクトリに `antora-playbook.yml` を作成します。
 
 .antora-playbook.yml
-[source,yml]
+[%linenums,yml]
 ----
 site:
   title: Docs Site
@@ -143,7 +187,7 @@ ui:
 以下のコマンドで、サイトを生成します。
 
 .Antoraの立ち上げ
-[source,sh]
+[%linenums,sh]
 ----
 $ npx antora antora-playbook.yml
 ----
@@ -151,7 +195,7 @@ $ npx antora antora-playbook.yml
 実行結果として、コンソール上にURLが生成されます。
 
 .生成結果（コンソール出力）
-[source,sh]
+[%linenums,sh]
 ----
 Site generation complete!
 Open file:///home/XXXXXXXXX/HOME/docs-site/build/site/index.html in a browser to view your site.
@@ -164,4 +208,93 @@ $ google-chrome
 
 以下のような画面が表示されれば成功です。
 
-image::images/antora_demo.png[]
+image::antora_demo.png[]
+
+次章から、自作のAsciidocファイルをAntoraで変換する方法について述べます。
+
+
+### How to use Antora
+
+#### Antora のためのディレクトリ構造の作成
+
+Antora は、asciidocで記載されたコンテンツをhtmlベースのサイトに変換してくれます。この機能を利用するためには、まずAntoraが認識できるようにディレクトリ構造を決められた形式に整える必要があります。
+
+最小構成は、下記のような形です。
+
+
+----
+📒repository <1>
+  📄antora.yml <2>
+  📂modules <3>
+    📂ROOT <4>
+      📂pages <5>
+        📄page-source-file.adoc <6>
+----
+
+<1> Repository のルートディレクトリ
+<2> Antora 用の設定ファイル。Repository のルートディレクトリ直下に置きます。名前は変更できません。
+<3> modules directory.
+<4> ROOT module directory.
+<5> pages family directory.
+<6> Source file of a page.
+
+参考:: https://docs.antora.org/antora/latest/standard-directories/
+
+今回はこのように作成します。
+
+----
+📒my_homepage
+  📂modules 
+    📂ROOT 
+      📂images 
+      📂pages 
+        📄test-book.adoc 
+      📄nav.adoc 
+  📄antora-playbook.yml 
+  📄antora.yml
+----
+
+各ファイルの中身はこうなっています。
+
+.antora-playbook.yml
+[,yml]
+----
+site:
+  title: Minato Lab
+  start_page: minato-lab::README.adoc
+content:
+  sources:
+  - url: .
+    branches: HEAD
+ui:
+  bundle:
+    url: https://gitlab.com/antora/antora-ui-default/-/jobs/artifacts/HEAD/raw/build/ui-bundle.zip?job=bundle-stable
+    snapshot: true
+----
+
+
+.antora.yml
+[,yml]
+----
+name: minato-lab
+version: ~
+title: Minato Lab
+nav:
+- modules/ROOT/nav.adoc
+----
+
+
+.test-book.adoc
+[,adoc]
+----
+= Hellow World.
+
+テストです。
+----
+
+
+.ROOT/nav.adoc
+[,adoc]
+----
+* xref:test-book.adoc[]
+----

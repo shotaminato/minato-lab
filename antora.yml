@@ -1,0 +1,5 @@
+name: minato-lab
+version: ~
+title: Minato Lab
+nav:
+- modules/ROOT/nav.adoc
