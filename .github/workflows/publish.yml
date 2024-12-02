@@ -59,7 +59,7 @@ jobs:
       id: sitemap
       uses: cicirello/generate-sitemap@v1
       with:
-        base-url-path: https://shotaminato.github.io/minato-lab/minato-lab/how_to_use_antora.html
+        base-url-path: https://shotaminato.github.io/minato-lab/minato-lab/
 
     - name: Output stats
       run: |
