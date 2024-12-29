@@ -1,9 +1,9 @@
 include::partial$template.adoc[]
 
 
-# **Asciidoc + Antora で HP 自作**
+= **Asciidoc + Antora で HP 自作**
 
-## Install WSL
+ Install WSL
 Antoraを取り扱うのに都合がいいので、WSLをインストールします。
 
 参考:: https://qiita.com/SBS_Takumi/items/f5f8a5934e00c7a7efb8
@@ -16,18 +16,18 @@ $ wsl --install
 
 
 
-## VScodeのフォント変更
+== VScodeのフォント変更
 Windowsのフォントは汚いので、以下を参考にして、フォントを変更します。
 
 参考ページ:: https://qiita.com/haya_ken/items/d9f32bcbb6cd0e6199ed
 
-Font Family に 'Source Han Code JP' とクオーテーション付きで指定するとうまくいきました。
+Font Family に `'Source Han Code JP'` とクオーテーション付きで指定するとうまくいきました。
 
 
 
 
 
-## Install Chrome (WSL)
+== Install Chrome (WSL)
 自作サイトのプレビュー用に、WSLにchromeをインストールします。以下の手順に従って進めてください。
 
 [%linenums,sh]
@@ -53,7 +53,7 @@ google-chrome --version
 
 
 
-### 日本語化
+=== 日本語化
 
 以上のインストール方法のみだと、日本語がインストールできていません。下記のサイトを参考に、WSL環境を日本語化します。
 
@@ -88,7 +88,7 @@ $ sudo dpkg-reconfigure locales
 
 参考:: https://gist.github.com/n3dst4/173e17ef502f7897582f9021135c3669
 
-## Antora
+== Antora
 以下、このページを参考に進めていきます。
 
 参考ページ:: https://docs.antora.org/antora/latest/install-and-run-quickstart/
@@ -99,7 +99,7 @@ $ sudo dpkg-reconfigure locales
 
 
 
-### Install Node.js
+=== Install Node.js
 
 以下のコマンドを打ってみます。バージョンが表示されたら、Node.jsはインストール済み。そうでなければ未インストールです。
 
@@ -135,7 +135,7 @@ $ nvm alias default v22.11.0 # 代わりにこのコマンドを打つ。これ�
 
 
 
-### Install Antora
+=== Install Antora
 
 .Install command
 [%linenums,sh]
@@ -157,7 +157,7 @@ npm warn deprecated glob@7.1.3: Glob versions prior to v9 are no longer supporte
 
 
 
-### Antora Test
+=== Antora Test
 
 自作サイトを作るためには、Antoraの設定ファイル（playbook）を作成する必要があるらしいです。先ほど作った `docs-site` ディレクトリに `antora-playbook.yml` を作成します。
 
@@ -210,9 +210,9 @@ image::antora_demo.png[]
 次章から、自作のAsciidocファイルをAntoraで変換する方法について述べます。
 
 
-### How to use Antora
+=== How to use Antora
 
-#### Antora のためのディレクトリ構造の作成
+==== Antora のためのディレクトリ構造の作成
 
 Antora は、asciidocで記載されたコンテンツをhtmlベースのサイトに変換してくれます。この機能を利用するためには、まずAntoraが認識できるようにディレクトリ構造を決められた形式に整える必要があります。
 
@@ -297,7 +297,7 @@ nav:
 ----
 
 
-### Github Action の設定
+=== Github Action の設定
 
 以下のファイルを作成します。
 
