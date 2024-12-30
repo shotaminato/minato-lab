@@ -33,6 +33,9 @@ jobs:
     - name: Install Antora
       run: npm i antora
 
+    - name: Install lunrextension
+      run: npm i @antora/lunr-extension
+
     - name: Generate Site
       run: npx antora antora-playbook.yml
 
