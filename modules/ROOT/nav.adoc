@@ -1,7 +1,6 @@
 * Home
-** xref:home.adoc[]
-* Asciidoc, Antora
-** xref:how_to_use_antora.adoc[]
-** xref:github_actions_note.adoc[]
-** xref:github_pages_note.adoc[]
-** xref:Antora/how_to_add_search_box_in_antora_pages.adoc[]
+** xref:Home/home.adoc[]
+* AsciidocとAntoraでHP自作
+** xref:Antora/01_install_antora.adoc[]
+** xref:Antora/04_add_search_box.adoc[]
+** xref:Antora/github_actions_note.adoc[]

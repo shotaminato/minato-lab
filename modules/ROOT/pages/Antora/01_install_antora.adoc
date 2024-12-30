@@ -1,7 +1,9 @@
 include::partial$template.adoc[]
 
+:date: 2024-12-30
 
-= AsciidocとAntoraでHP自作
+
+= Antora の始め方
 
 == Install WSL
 

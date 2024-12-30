@@ -1,6 +1,6 @@
 site:
-  title: Minato Lab
-  start_page: minato-lab::home.adoc
+  title: Minato Lab.
+  start_page: minato-lab::Home/home.adoc
 content:
   sources:
   - url: .

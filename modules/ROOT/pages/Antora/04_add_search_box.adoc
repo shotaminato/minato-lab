@@ -1,0 +1,11 @@
+include::partial$template.adoc[]
+
+= Antoraサイトに検索ボックスを追加（執筆中）
+
+https://gitlab.com/antora/antora-lunr-extension
+
+
+== partials 使い方
+dhirekutorimeiha partials
+include は partial
+
