@@ -1,0 +1,3 @@
+[submodule "ui/antora-ui-default"]
+	path = ui/antora-ui-default
+	url = git@gitlab.com:tyuntune/antora-ui-default.git
