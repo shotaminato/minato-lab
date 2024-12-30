@@ -1,9 +1,10 @@
 include::partial$template.adoc[]
 
 
-= **Asciidoc + Antora で HP 自作**
+= AsciidocとAntoraでHP自作
 
- Install WSL
+== Install WSL
+
 Antoraを取り扱うのに都合がいいので、WSLをインストールします。
 
 参考:: https://qiita.com/SBS_Takumi/items/f5f8a5934e00c7a7efb8
