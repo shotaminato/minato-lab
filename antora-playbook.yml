@@ -1,6 +1,6 @@
 site:
   title: Minato Lab
-  start_page: minato-lab::how_to_use_antora.adoc
+  start_page: minato-lab::home.adoc
 content:
   sources:
   - url: .
