@@ -2,5 +2,6 @@
 ** xref:Home/home.adoc[]
 * AsciidocとAntoraでHP自作
 ** xref:Antora/01_install_antora.adoc[]
+** xref:Antora/02_customize_antora_page.adoc[]
 ** xref:Antora/04_add_search_box.adoc[]
 ** xref:Antora/github_actions_note.adoc[]
