@@ -1,0 +1,109 @@
+= Antoraサイトをカスタマイズ（執筆中）
+
+== はじめに
+
+Antoraのデフォルト形式は、Antora Default UIというリポジトリで管理されています。
+
+リポジトリ:: https://gitlab.com/antora/antora-ui-default
+
+これをそのまま利用するだけでも十分見やすいサイトを作成可能ですが、より自分好みにカスタマイズしたい場合は、このリポジトリに含まれているHTMLやCSSを編集して自分のサイトに適用することも可能です。
+
+
+
+== Antora Default UI 使い方
+
+=== デフォルト形式のまま使用するとき
+
+xref:Antora/01_install_antora.adoc[] で触れたように、antora-playbook.yml に指定することで、すぐに利用可能です。特になにもダウンロード・インストール等する必要はありません。
+
+
+
+=== カスタマイズするとき
+
+==== GULPのインストール（初回のみ）
+
+カスタマイズしたHTMLやCSSをAntoraプロジェクトに組み込むためには、一度 `ui-bundle.zip` という形式にビルドする必要があります。そのビルドにGULPというツールを使用します。
+
+npmをインストール済みであれば、下記コマンドでインストールできます。
+
+[,bash]
+----
+$ npm install -g gulp-cli
+----
+
+正しくインストールできたか、下記のコマンドで確認してください。バージョン情報が表示されれば正常です。
+
+[,bash]
+----
+$ gulp --version
+----
+
+==== プロジェクトの初期設定
+
+プロジェクトをクローンした後、初期設定が必要です。下記コマンドを実行します。
+
+[,bash]
+----
+$ git clone https://gitlab.com/antora/antora-ui-default
+$ cd <antora-ui-default>
+$ npm install
+----
+
+
+
+
+==== カスタマイズ手順
+
+カスタマイズは下記の手順で行います。
+. CSS HTMLを編集する。
+.. 具体的に何を同編集すればよいかについては、次節 <<各要素のカスタマイズ方法>> を参照してください。
+. ui-bundle.zip をビルドする。（下記コマンドを実行）
++
+[,bash]
+----
+$ cd <antora-ui-default リポジトリの場所>
+$ gulp bundle （gulp bundle:packでは失敗するので注意）
+----
+. ui-bundle.zip をAntoraプロジェクトで読み込む。
+.. playbookを変更して、ui-bundle.zipを読み込みます。snapshotは消します。
+
+
+
+
+
+
+
+
+==== 各要素のカスタマイズ方法
+
+
+
+
+===== faviconを追加する。
+
+favicon を追加する。
+
+https://docs.antora.org/antora-ui-default/add-static-files/
+
+src/static フォルダを追加
+favicon.icoを追加
+
+header を編集
+
+gulp bundle
+実行してbuildする。
+
+===== フォントの変更方法
+/home/shota/HOME/00_MyHP/minato-lab/ui/antora-ui-default/src/css/vars.css
+
+Google Font の使い方。
+
+. 好きなフォントをきめる
+. フォントのダウンロードから、下記のようなURLをコピー
+. antora-ui-default/src/partials の head-styles.hbs に追加する。
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Leckerli+One&display=swap" rel="stylesheet">
+
+. Fontを変えたい箇所のCSSを変更する。
