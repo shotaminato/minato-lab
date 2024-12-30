@@ -7,7 +7,7 @@ content:
     branches: HEAD
 ui:
   bundle:
-    url: ./ui/antora-ui-default/build/ui-bundle.zip
+    url: ./ui/ui-bundle.zip
   supplemental_files:
   - path: ui.yml
     contents: |
