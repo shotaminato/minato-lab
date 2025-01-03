@@ -9,7 +9,7 @@ include::partial$template.adoc[]
 
 Antoraを取り扱うのに都合がいいので、WSLをインストールします。
 
-参考:: https://qiita.com/SBS_Takumi/items/f5f8a5934e00c7a7efb8
+参考ページ: https://qiita.com/SBS_Takumi/items/f5f8a5934e00c7a7efb8
 
 [%linenums,sh]
 ----
@@ -22,7 +22,7 @@ $ wsl --install
 == VScodeのフォント変更
 Windowsのフォントは汚いので、以下を参考にして、フォントを変更します。
 
-参考ページ:: https://qiita.com/haya_ken/items/d9f32bcbb6cd0e6199ed
+参考ページ: https://qiita.com/haya_ken/items/d9f32bcbb6cd0e6199ed
 
 Font Family に `'Source Han Code JP'` とクオーテーション付きで指定するとうまくいきました。
 
@@ -49,7 +49,7 @@ $ sudo apt -y install ./google-chrome-stable_current_amd64.deb
 google-chrome --version
 ----
 
-参考:: https://scottspence.com/posts/use-chrome-in-ubuntu-wsl
+参考ページ: https://scottspence.com/posts/use-chrome-in-ubuntu-wsl
 
 
 
@@ -69,8 +69,8 @@ $ sudo apt install fonts-ipaexfont
 $ fc-cache -fv
 ----
 
-参考1:: https://windows-core.com/windows_feature/feature-52.php
-参考2:: https://lef237.hatenablog.com/entry/2022/12/05/163550
+参考1: https://windows-core.com/windows_feature/feature-52.php
+参考2: https://lef237.hatenablog.com/entry/2022/12/05/163550
 
 参考2のようにフォントをインストールしないと、文字化けは治りません。
 
@@ -89,12 +89,12 @@ $ sudo dpkg-reconfigure locales
 
 操作方法は、`ja_JP.UTF8` 的な選択肢を二回程度選択すればOkです。
 
-参考:: https://gist.github.com/n3dst4/173e17ef502f7897582f9021135c3669
+参考: https://gist.github.com/n3dst4/173e17ef502f7897582f9021135c3669
 
 == Antora
 以下、このページを参考に進めていきます。
 
-参考ページ:: https://docs.antora.org/antora/latest/install-and-run-quickstart/
+参考ページ: https://docs.antora.org/antora/latest/install-and-run-quickstart/
 
 
 
@@ -114,7 +114,7 @@ $ node -v
 私の環境ではバージョンが表示されなかったので、インストールしていきます。 +
 nvmと呼ばれるバージョン管理ソフトがあるようなので、それをインストールします。 +
 
-参考ページ:: https://github.com/nvm-sh/nvm#installation-and-update
+参考ページ: https://github.com/nvm-sh/nvm#installation-and-update
 
 .Install NVM
 [%linenums,sh]
@@ -238,7 +238,7 @@ Antora は、asciidocで記載されたコンテンツをhtmlベースのサイ�
 <5> pages family directory.
 <6> Source file of a page.
 
-参考:: https://docs.antora.org/antora/latest/standard-directories/
+参考ページ: https://docs.antora.org/antora/latest/standard-directories/
 
 今回はこのように作成します。
 
@@ -351,4 +351,5 @@ jobs:
 
 Githubにプッシュすれば、自動でデプロイされます。
 
-参考:: https://docs.antora.org/antora/latest/publish-to-github-pages/#using-github-actions
+参考ページ: https://docs.antora.org/antora/latest/publish-to-github-pages/#using-github-actions
+
