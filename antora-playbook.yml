@@ -17,3 +17,6 @@ ui:
 antora:
   extensions:
   - require: '@antora/lunr-extension'
+asciidoc:
+  attributes:
+    page-pagination: ''
