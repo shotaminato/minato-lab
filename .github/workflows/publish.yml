@@ -36,6 +36,9 @@ jobs:
     - name: Install lunrextension
       run: npm i @antora/lunr-extension
 
+    - name: Build pages
+      run: python3 post_processing.py
+
     - name: Generate Site
       run: npx antora antora-playbook.yml
 
