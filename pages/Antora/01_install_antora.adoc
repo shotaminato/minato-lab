@@ -1,13 +1,4 @@
-:postdate: 2024-12-30 02:06:14 -0800
-:revdate: 2025-01-03 00:59:04 -0800
-
-include::partial$template.adoc[]
-
 = Antoraの始め方
-
-[.text-right]
-投稿日：{postdate}　最終更新日：{revdate}
-
 
 == Install WSL
 

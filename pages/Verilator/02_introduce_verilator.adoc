@@ -1,11 +1,4 @@
-:postdate: 
-:revdate: 
-include::partial$template.adoc[]
-
 = Verilatorの使い方（初級編）
-
-[.text-right]
-投稿日：{postdate}　最終更新日：{revdate}
 
 == セットアップ
 

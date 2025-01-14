@@ -1,11 +1,4 @@
-:postdate: 2024-12-30 02:06:14 -0800
-:revdate: 2024-12-30 02:06:14 -0800
-include::partial$template.adoc[]
-
 = How to use Github Actions
-
-[.text-right]
-投稿日：{postdate}　最終更新日：{revdate}
 
 == Setup
 

@@ -1,11 +1,4 @@
-:postdate: 
-:revdate: 
-include::partial$template.adoc[]
-
 = Verilatorのインストール
-
-[.text-right]
-投稿日：{postdate}　最終更新日：{revdate}
 
 WSLでVerilatorをインストールします。使用するOSはUbuntu 20.04です。
 

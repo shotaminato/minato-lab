@@ -1,12 +1,4 @@
-:postdate: 2024-12-30 02:06:47 -0800
-:revdate: 2024-12-30 02:06:47 -0800
-
-include::partial$template.adoc[]
-
 = Antoraサイトをカスタマイズ（執筆中）
-
-[.text-right]
-投稿日：{postdate}　最終更新日：{revdate}
 
 == はじめに
 
