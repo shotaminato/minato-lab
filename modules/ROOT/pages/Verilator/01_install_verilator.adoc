@@ -1,0 +1,79 @@
+:postdate: 
+:revdate: 
+include::partial$template.adoc[]
+
+= Verilatorのインストール
+
+[.text-right]
+投稿日：{postdate}　最終更新日：{revdate}
+
+WSLでVerilatorをインストールします。使用するOSはUbuntu 20.04です。
+
+参考ページ:: https://verilator.org/guide/latest/install.html
+
+== Install Prerequisites
+
+[source,bash]
+----
+sudo apt install git help2man perl python3 make
+sudo apt install g++ libfl2 libfl-dev zlibc zlib1g zlib1g-dev
+----
+
+以下はオプションです。
+
+[source,bash]
+----
+sudo apt install ccache libgoogle-perftools-dev numactl
+sudo apt install perl-doc
+sudo apt install autoconf flex bison
+sudo apt install clang  cmake gdb graphviz lcov python3-clang yapf3 jq
+sudo pip3 install sphinx sphinx_rtd_theme sphinxcontrib-spelling breathe ruff
+sudo pip3 install git+https://github.com/antmicro/astsee.git
+cpan install Pod::Perldoc
+----
+
+mold, clang-format-14, gprof のインストールはエラーが出るため、スキップします。
+また、bearも下記エラーの原因になるようです。ソースコードを見ると、bearの対象は、Ubuntu22.04以降のようでした。もしエラーが出た場合は、 `sudo apt remove bear` でアンインストールできます。
+
+.bearのエラー
+[source,bash]
+----
+bear: error: unrecognized arguments: --output
+----
+
+
+== Install Verilator
+
+
+[source,bash]
+----
+cd <install-directory>
+git clone https://github.com/verilator/verilator
+cd verilator
+git pull        # Make sure we're up-to-date
+git checkout stable
+autoconf
+----
+
+インストール方法がいくつかありますが、 `1. Run-in-Place from VERILATOR_ROOT` に従って進めます。
+
+[source,bash]
+----
+cd <verilator-directory>
+export VERILATOR_ROOT=`pwd`
+./configure
+make -j `nproc`
+----
+
+
+少し時間がかかる（固まったように見える）ので、気長に待ちます。
+`Build complete` と表示されたら、インストール完了です。以下のコマンドでテストを行います。
+
+
+[source,bash]
+----
+make test
+----
+
+`Tests passed!` と表示されたら、正常にインストールされています。
+

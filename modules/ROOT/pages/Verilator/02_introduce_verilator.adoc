@@ -1,0 +1,16 @@
+:postdate: 
+:revdate: 
+include::partial$template.adoc[]
+
+= Verilatorの使い方（初級編）
+
+[.text-right]
+投稿日：{postdate}　最終更新日：{revdate}
+
+== セットアップ
+
+Verilatorを使用する前に、Pathの設定が必要です。インストール時にクローンしたverilatorのディレクトリを指定します。
+
+----
+export VERILATOR_ROOT=/path/to/verilator
+----
