@@ -1,6 +1,11 @@
+:postdate: 2024-12-30 02:06:14 -0800
+:revdate: 2024-12-30 02:06:14 -0800
 include::partial$template.adoc[]
 
 = Antoraサイトに検索ボックスを追加（執筆中）
+
+[.text-right]
+投稿日：{postdate}　最終更新日：{revdate}
 
 https://gitlab.com/antora/antora-lunr-extension
 
@@ -9,3 +14,13 @@ https://gitlab.com/antora/antora-lunr-extension
 dhirekutorimeiha partials
 include は partial
 
+
+
+== prev next の追加方法
+playbook に下記の記述を追加
+----
+asciidoc:
+  attributes:
+    page-pagination: ''
+----
+参考: https://docs.antora.org/antora-ui-default/template-customization/#page-pagination-attribute

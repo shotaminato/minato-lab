@@ -1,7 +1,36 @@
+:postdate: 2024-12-30 02:06:14 -0800
+:revdate: 2024-12-30 02:06:14 -0800
 :date: 2024-12-30
+include::partial$template.adoc[]
 
 = HOME
+
+[.text-right]
+投稿日：{postdate}　最終更新日：{revdate}
 
 == はじめに
 
 カリフォルニア在住エンジニアの日記兼、開発備忘録です。
+
+以下の内容の記事を不定期で更新していきます。
+
+* Asciidoc, Antora
+* System Verilog
+* Verilator
+* Linuc
+
+== 日記
+
+=== 2025-01-14
+
+今日から日記をつけます。おそらく、毎日更新することはないでしょう。 
+
+本日は、Verilatorの使い方を記事にまとめ始めました。VerilatorはオープンソースのEDAツールで、誰でも無料で使用できます。ほとんどのEDAツールは有料で高価ですが、Verilatorは例外です。ただし、GUIがないため、コマンドラインでの操作が必要です。
+
+一つ目の記事として、Verilatorのインストール方法をまとめました。以下のリンクからアクセスできます。
+
+xref:Verilator/01_install_verilator.adoc[]
+
+ほとんどが公式ページの引用です。特に問題なく進められるはずです。
+
+次は、System Verilogで書いたテストベンチをコンパイルして、DUTのシミュレーションを行う方法をまとめたいと思います。

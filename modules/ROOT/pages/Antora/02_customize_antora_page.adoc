@@ -1,4 +1,12 @@
+:postdate: 2024-12-30 02:06:47 -0800
+:revdate: 2024-12-30 02:06:47 -0800
+
+include::partial$template.adoc[]
+
 = Antoraサイトをカスタマイズ（執筆中）
+
+[.text-right]
+投稿日：{postdate}　最終更新日：{revdate}
 
 == はじめに
 
@@ -107,3 +115,6 @@ Google Font の使い方。
     <link href="https://fonts.googleapis.com/css2?family=Leckerli+One&display=swap" rel="stylesheet">
 
 . Fontを変えたい箇所のCSSを変更する。
+
+== 参考
+https://note.com/chappy_dogheart/n/nce8e4a2b365c
