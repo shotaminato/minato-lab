@@ -16,6 +16,9 @@ def main():
             created_timestamp  = subprocess.check_output(f'git log --format=%ci -- {file_path} | tail -n 1', shell=True).decode().strip()
             print(f'{file:<40} - Modified Date: {modified_timestamp} - Created Date: {created_timestamp}')
             
+            modified_timestamp = f"{modified_timestamp[0:4]}年{modified_timestamp[5:7]}月{modified_timestamp[8:10]}日"
+            created_timestamp  = f"{created_timestamp [0:4]}年{created_timestamp [5:7]}月{created_timestamp [8:10]}日"
+
             # Open the file in read mode
             with open(file_path, 'r') as f:
                 is_cdate_set = False
@@ -35,7 +38,7 @@ def main():
                         write_line = f':revdate: {modified_timestamp}\n'
 
                     if line[0:2] == "= " or line[0:2] == "# ":
-                        write_line = "\n" + line + "\n\n[.text-right]\n投稿日：{postdate}　最終更新日：{revdate}\n\n"
+                        write_line = "\n" + line + "\n\n[.text-right]\n投稿日：{postdate} +\n最終更新日：{revdate}\n\n"
                 
                     # Append the processed content to the list
                     processed_content.append(write_line)
