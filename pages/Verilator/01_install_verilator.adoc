@@ -1,6 +1,10 @@
 = Verilatorのインストール
 
-WSLでVerilatorをインストールします。使用するOSはUbuntu 20.04です。
+== はじめに
+
+WSLでVerilatorをインストールします。使用するOSはUbuntu 24.04です。
+
+Note:: Ubuntuは22.04以降を使用してください。それ以外のOSでも動作はしますが、Cpp20が必要です。Cpp17以前では、Version 5.0から利用になったタイミングシミュレーション機能が使用できません。
 
 参考ページ:: https://verilator.org/guide/latest/install.html
 
@@ -8,24 +12,60 @@ WSLでVerilatorをインストールします。使用するOSはUbuntu 20.04で
 
 [source,bash]
 ----
+sudo apt update
 sudo apt install git help2man perl python3 make
-sudo apt install g++ libfl2 libfl-dev zlibc zlib1g zlib1g-dev
+sudo apt install g++ libfl2 libfl-dev zlib1g zlib1g-dev
+sudo apt install python3-pip
 ----
+
+Note:: 必ず最初に `sudo apt update` を実行してください。特にインストールしたてのUbuntuでは、パッケージが見当たらない(Unable to locate)エラーが発生する可能性があります。
+
+Note:: python3-pip は後のインストールに必要なため、追加しました。
+
+エラーになったパッケージがあれば、無視してよいようです。筆者の環境では、公式ドキュメントに記載の `zlibc` と `gprof` が `unable locate package` になりました。
 
 以下はオプションです。
 
 [source,bash]
 ----
-sudo apt install ccache libgoogle-perftools-dev numactl
-sudo apt install perl-doc
+sudo apt install ccache libgoogle-perftools-dev numactl perl-doc
 sudo apt install autoconf flex bison
-sudo apt install clang  cmake gdb graphviz lcov python3-clang yapf3 jq
-sudo pip3 install sphinx sphinx_rtd_theme sphinxcontrib-spelling breathe ruff
-sudo pip3 install git+https://github.com/antmicro/astsee.git
+sudo apt install clang cmake gdb graphviz lcov python3-clang yapf3 jq
+sudo apt install mold clang-format-14 bear
 cpan install Pod::Perldoc
 ----
 
-mold, clang-format-14, gprof のインストールはエラーが出るため、スキップします。
+こちらもオプションですが、sphinxをインストールします。
+
+[source,bash]
+----
+sudo pip3 install sphinx sphinx_rtd_theme sphinxcontrib-spelling breathe ruff
+sudo pip3 install git+https://github.com/antmicro/astsee.git
+----
+
+上記コマンドを実行したら、下記のエラーが出ました。
+
+[source,bash]
+----
+error: externally-managed-environment
+----
+
+どうやら、最近のUbuntuでPythonを使用するときは、仮想環境での実行が必須となったようです。そこで、下記の通りにします。
+
+[source,bash]
+----
+cd <好きなディレクトリ（アクセスしやすい場所がよいです。）>
+python3 -m venv .py_venv
+source .py_venv/bin/activate
+python3 -m pip install sphinx sphinx_rtd_theme sphinxcontrib-spelling breathe ruff
+python3 -m pip install git+https://github.com/antmicro/astsee.git
+cpan install Pod::Perldoc
+----
+
+Note:: 以後、Pythonを使用する時は、毎回 `source /path/to/.py_venv/bin/activate` を実行して仮想環境を有効にします。
+
+参考: https://qiita.com/kei_tnk/items/f80f552185ce16530133
+
 また、bearも下記エラーの原因になるようです。ソースコードを見ると、bearの対象は、Ubuntu22.04以降のようでした。もしエラーが出た場合は、 `sudo apt remove bear` でアンインストールできます。
 
 .bearのエラー
@@ -60,7 +100,7 @@ make -j `nproc`
 
 
 少し時間がかかる（固まったように見える）ので、気長に待ちます。
-`Build complete` と表示されたら、インストール完了です。以下のコマンドでテストを行います。
+`Build complete!` と表示されたら、インストール完了です。以下のコマンドでテストを行います。
 
 
 [source,bash]
