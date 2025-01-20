@@ -8,3 +8,4 @@
 ** xref:Antora/github_actions_note.adoc[]
 * Verilator
 ** xref:Verilator/01_install_verilator.adoc[]
+** xref:Verilator/02_introduce_verilator.adoc[]

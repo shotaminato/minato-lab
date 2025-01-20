@@ -2,18 +2,122 @@
 
 == セットアップ
 
-Verilatorを使用する前に、Pathの設定が必要です。インストール時にクローンしたverilatorのディレクトリを指定します。
+Verilatorを使用する前に、環境変数を設定します。
+
+`VERILATOR_ROOT` に、インストール時にクローンしたverilatorリポジトリのルートディレクトリを指定します。
 
 [source,bash]
 ----
 export VERILATOR_ROOT=/path/to/verilator
 ----
 
+以下のコマンドを実行して、正しく環境変数が設定されているか確認してください。下記のような結果になれば正しいです。
+
 [source,bash]
 ----
-export VERILATOR_ROOT=/path/to/verilator/bin
+$ ls $VERILATOR_ROOT
+
+Artistic        CPPLINT.cfg  Makefile     autom4te.cache  codecov.yml    configure     examples    nodist        verilator-config-version.cmake     verilator-config.cmake.in  verilator.pc.in       verilator_profcfunc.1
+CITATION.cff    Changes      Makefile.in  bin             config.log     configure.ac  include     src           verilator-config-version.cmake.in  verilator.1                verilator_coverage.1
+CMakeLists.txt  LICENSE      README.rst   ci              config.status  docs          install-sh  test_regress  verilator-config.cmake             verilator.pc               verilator_gantt.1
 ----
 
-== 結果
+== サンプルデザインの作成
+
+Verilatorの使い方を学ぶために、今回は以下のサンプルを使用します。
+
+.test.sv
+[source,verilog]
+----
+module test ();
+    initial begin
+        logic [31:0] cnt;
+        $dumpfile("test.vcd");
+        $dumpvars();
+        cnt = 0;
+        for (int i= 0 ; i < 10 ; i++) begin
+            $display("i: %0d, count: %0d, time: %0t", i, cnt, $time);
+            #20;
+            cnt += 1;
+        end
+    end
+endmodule
+----
+
+このデザインは、10回ループして、cntを1ずつ増やしていきます。また、 `$display` で、 `i` と `cnt` の値を表示します。
+`dumpfile` と `dumpvars` でVCDファイルを作成します。これらの関数は、シミュレーションの波形を記録するために使用されます。シミュレーションの最初に一度呼ぶだけでよいです。（この記述の必要のないシミュレータ（VCSなど）もありますが、Verilatorでは必要です。）
+
+== サンプルデザインのコンパイル
+
+次に、サンプルデザインをコンパイルします。以下のコマンドを実行してください。
+
+[source,bash]
+----
+$VERILATOR_ROOT/bin/verilator -Wall --trace --binary test.sv 
+----
+
+オプションの説明は以下の通りです。
+
+-Wall:: 警告を表示します。
+--trace:: VCDファイルを作成します。
+--binary:: 実行ファイルを作成します。これは、`--build` `--exe` `--main` `--timing` を同時に指定するのと同じ動作をします。
+
+その他のオプションについては、こちらのページを参考にしてください。
+
+参考:: https://veripool.org/guide/latest/exe_verilator.html
+
+== サンプルデザインの実行
+
+コンパイルが完了すると、 `obj_dir` ディレクトリが作成されます。以下のコマンドを実行して、サンプルデザインを実行します。
+
+[source,bash]
+----
+./obj_dir/Vtest
+----
+
+下記のような結果が表示されれば成功です。
+
+[source,bash]
+----
+i: 0, count: 0, time: 0
+i: 1, count: 1, time: 20
+i: 2, count: 2, time: 40
+i: 3, count: 3, time: 60
+i: 4, count: 4, time: 80
+i: 5, count: 5, time: 100
+i: 6, count: 6, time: 120
+i: 7, count: 7, time: 140
+i: 8, count: 8, time: 160
+i: 9, count: 9, time: 180
+----
+
+== VCDファイルの確認
+
+コンパイルしたデザインを実行する、カレントディレクトリに `test.vcd` というファイルが作成されます。このファイルは、シミュレーションの波形を記録したファイルです。VCDファイルの閲覧には、GTKWaveなどの波形ビューアを使用します。
+
+私は波形ビューワーとして、`GTKWave` と VSCode 拡張機能の `WaveTrace` を使用しています。特に `WaveTrace` は、単に拡張機能をインストールするだけで利用できるため、簡単な波形の確認にはとてもおすすめです。 
+
+WaveTrace:: https://marketplace.visualstudio.com/items?itemName=wavetrace.wavetrace
+
+無料版では、8個の波形のみを表示できます。有料版では、その制限がなくなります。
+
+`WaveTrace` を使用して波形を表示すると以下のようになります。
 
 image::verilator/introduce_verilator_0.png[]
+
+== まとめ
+
+今回は、`Verilator` を使用して、System Verilog のテストベンチをコンパイルし、実行する方法を紹介しました。Verilatorは、オープンソースのEDAツールであり、無料で利用できます。また、最新のバージョンでは、タイミングのシミュレーションが可能になりました。これにより、System Verilog のみでテストベンチを完結させることができます。大変便利でよろしいです。
+
+また、以上の操作をまとめて、下記のようなスクリプトを作成しておくと便利です。
+
+.build.sh
+[source,bash]
+----
+rm -r obj_dir
+export VERILATOR_ROOT=/path/to/verilator/
+$VERILATOR_ROOT/bin/verilator -Wall --trace --binary test.sv
+./obj_dir/Vtest
+----
+
+コメントや質問があれば、下記のコメント欄にお願いします。お待ちしております。
