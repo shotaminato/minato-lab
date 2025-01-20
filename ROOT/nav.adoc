@@ -1,5 +1,6 @@
 * Home
-** xref:Home/home.adoc[]
+** xref:Home/introduction.adoc[]
+** xref:Home/diary.adoc[]
 * AsciidocとAntoraでHP自作
 ** xref:Antora/01_install_antora.adoc[]
 ** xref:Antora/02_customize_antora_page.adoc[]
