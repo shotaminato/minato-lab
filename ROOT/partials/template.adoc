@@ -1,4 +1,5 @@
 :source-highlighter: highlight.js
 :icons:
 :sectnums:
+:sectnumlevels: 5
 :author: Minato-lab

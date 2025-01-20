@@ -4,6 +4,16 @@
 
 Verilatorを使用する前に、Pathの設定が必要です。インストール時にクローンしたverilatorのディレクトリを指定します。
 
+[source,bash]
 ----
 export VERILATOR_ROOT=/path/to/verilator
 ----
+
+[source,bash]
+----
+export VERILATOR_ROOT=/path/to/verilator/bin
+----
+
+== 結果
+
+image::verilator/introduce_verilator_0.png[]
