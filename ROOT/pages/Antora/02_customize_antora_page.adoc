@@ -10,17 +10,15 @@ Antoraのデフォルト形式は、Antora Default UIというリポジトリで
 
 
 
-== Antora Default UI 使い方
+== Antora Defalut UI をデフォルト形式のまま使用するとき
 
-=== デフォルト形式のまま使用するとき
-
-xref:Antora/01_install_antora.adoc[] で触れたように、antora-playbook.yml に指定することで、すぐに利用可能です。特になにもダウンロード・インストール等する必要はありません。
+xref:Antora/01_install_antora.adoc[] で触れたように、antora-playbook.yml に指定することで、すぐに利用可能です。特にダウンロード・インストール等の必要はありません。
 
 
 
-=== カスタマイズするとき
+== Antora Defalut UI をカスタマイズするとき
 
-==== GULPのインストール（初回のみ）
+=== ツールのインストール（初回のみ）
 
 カスタマイズしたHTMLやCSSをAntoraプロジェクトに組み込むためには、一度 `ui-bundle.zip` という形式にビルドする必要があります。そのビルドにGULPというツールを使用します。
 
@@ -38,9 +36,7 @@ $ npm install -g gulp-cli
 $ gulp --version
 ----
 
-==== プロジェクトの初期設定
-
-プロジェクトをクローンした後、初期設定が必要です。下記コマンドを実行します。
+また、プロジェクトをクローンした後、初期設定が必要です。下記コマンドを実行します。
 
 [,bash]
 ----
@@ -52,34 +48,42 @@ $ npm install
 
 
 
-==== カスタマイズ手順
+=== カスタマイズ手順
 
 カスタマイズは下記の手順で行います。
+
 . CSS HTMLを編集する。
 .. 具体的に何を同編集すればよいかについては、次節 <<各要素のカスタマイズ方法>> を参照してください。
-. ui-bundle.zip をビルドする。（下記コマンドを実行）
+. ui-bundle.zip をビルドする。（下記コマンドを実行） 
 +
-[,bash]
+[source,bash]
 ----
 $ cd <antora-ui-default リポジトリの場所>
 $ gulp bundle （gulp bundle:packでは失敗するので注意）
 ----
-. ui-bundle.zip をAntoraプロジェクトで読み込む。
+. ui-bundle.zip を Antora プロジェクトで読み込む。
 .. playbookを変更して、ui-bundle.zipを読み込みます。snapshotは消します。
++
+.antora-playbook.yml
+[source,yaml]
+----
+ui:
+  bundle:
+    url: ./ui/ui-bundle.zip
+----
 
 
 
 
+参考::
+https://note.com/chappy_dogheart/n/nce8e4a2b365c
 
 
+=== カスタマイズ例
 
+以下に Antora Default UI の具体的なカスタマイズ例を示します。
 
-==== 各要素のカスタマイズ方法
-
-
-
-
-===== faviconを追加する。
+==== faviconを追加する。（編集中）
 
 favicon を追加する。
 
@@ -93,7 +97,7 @@ header を編集
 gulp bundle
 実行してbuildする。
 
-===== フォントの変更方法
+==== フォントの変更方法（編集中）
 /home/shota/HOME/00_MyHP/minato-lab/ui/antora-ui-default/src/css/vars.css
 
 Google Font の使い方。
@@ -108,5 +112,31 @@ Google Font の使い方。
 
 . Fontを変えたい箇所のCSSを変更する。
 
-== 参考
-https://note.com/chappy_dogheart/n/nce8e4a2b365c
+
+
+
+==== Antora のナビゲーションを展開したままにする
+
+Antora でページを表示すると、毎回左ペインのナビゲーションが折りたたまれてしまいます。これを展開したままにするには、 `antora-ui-default/src/partials/nav-tree.hbs` を下記の通りに編集します。is-active を追加するだけです。
+
+.nav-tree.hbs 変更前
+[source,html]
+----
+<li class="nav-item {{#if (eq ./url @root.page.url)}} is-current-page{{/if}}" data-depth="{{or ../level 0}}">
+----
+
+.nav-tree.hbs 変更後
+[source,html]
+----
+<li class="nav-item is-active{{#if (eq ./url @root.page.url)}} is-current-page{{/if}}" data-depth="{{or ../level 0}}">
+----
+
+結果は以下のようになります。
+
+.変更前
+image::Antora/image_0.png[]
+
+.変更後
+image::Antora/image_1.png[]
+
+参考:: https://stackoverflow.com/questions/75671620/antora-keep-navigation-menu-expanded-while-clicking-any-of-the-items-in-the-me
