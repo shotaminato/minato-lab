@@ -1,15 +1,6 @@
 
 = 日記
 
-== 2025-01-20
-
-本日はverilatorの使い方の記事を作成しました。VerilatorはVersion5.0からタイミングシミュレーションに対応したので、テストベンチをSystemVeriligで作成できるようになりました。
-これにより、System Verilogのみで設計からテストまで行うことができ、利便性が増しました。もちろんＣ言語との接続も引き続き可能なため、複雑なテストベンチはＣ言語側に任せることも可能です。
-
-記事はこちらです。よければご覧ください。
-
-xref:Verilator/02_introduce_verilator.adoc[]
-
 == 2025-01-22
 
 少し日が開きました。最近は本業が忙しいです。上司からのスケジュールが厳しいため、残業が増えています。
@@ -19,6 +10,16 @@ xref:Verilator/02_introduce_verilator.adoc[]
 記事:: xref:Antora/02_customize_antora_page.adoc[]
 
 Antora Default UI を変更すればなんでもできそうです。Antora は本当に便利ですね。
+
+== 2025-01-20
+
+本日はverilatorの使い方の記事を作成しました。VerilatorはVersion5.0からタイミングシミュレーションに対応したので、テストベンチをSystemVeriligで作成できるようになりました。
+これにより、System Verilogのみで設計からテストまで行うことができ、利便性が増しました。もちろんＣ言語との接続も引き続き可能なため、複雑なテストベンチはＣ言語側に任せることも可能です。
+
+記事はこちらです。よければご覧ください。
+
+xref:Verilator/02_introduce_verilator.adoc[]
+
 
 == 2025-01-19
 
