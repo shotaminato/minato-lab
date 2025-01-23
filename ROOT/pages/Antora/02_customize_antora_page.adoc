@@ -134,9 +134,9 @@ Antora でページを表示すると、毎回左ペインのナビゲーショ�
 結果は以下のようになります。
 
 .変更前
-image:Antora/image_0.png[width=200]
+image::Antora/image_0.png[width=300]
 
 .変更後
-image:Antora/image_1.png[width=200]
+image::Antora/image_1.png[width=300]
 
 参考:: https://stackoverflow.com/questions/75671620/antora-keep-navigation-menu-expanded-while-clicking-any-of-the-items-in-the-me
