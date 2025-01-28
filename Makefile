@@ -2,8 +2,9 @@
 # Build script for the Antora documentation
 
 pages:
-	python3 post_processing.py
+	python3 pre_processing.py
 	npx antora antora-playbook.yml --stacktrace
+	python3 post_processing.py
 
 all: ui pages
 
