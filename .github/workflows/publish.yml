@@ -44,6 +44,9 @@ jobs:
     - name: Generate Site
       run: npx antora antora-playbook.yml
 
+    - name: Build pages
+      run: python3 post_processing.py
+
     - name: Upload Artifacts
       uses: actions/upload-pages-artifact@v3
       with:
