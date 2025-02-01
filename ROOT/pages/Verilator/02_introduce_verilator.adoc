@@ -1,3 +1,5 @@
+:description: Verilator を使用して、System Verilog のタイミング制御付きテストベンチをコンパイルし、実行する方法について記載します。
+
 = Verilatorの使い方（初級編）
 
 == セットアップ

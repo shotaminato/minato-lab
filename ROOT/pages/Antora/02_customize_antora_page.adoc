@@ -1,4 +1,9 @@
+:description: このページでは、Antora Default UI をカスタマイズする方法について説明します。
+
 = Antoraサイトをカスタマイズ
+
+
+
 
 == はじめに
 
