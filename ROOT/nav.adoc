@@ -4,8 +4,8 @@
 * AsciidocとAntoraでHP自作
 ** xref:Antora/01_install_antora.adoc[]
 ** xref:Antora/02_customize_antora_page.adoc[]
-** xref:Antora/04_add_search_box.adoc[]
-** xref:Antora/github_actions_note.adoc[]
+// ** xref:Antora/04_add_search_box.adoc[]
+// ** xref:Antora/github_actions_note.adoc[]
 * Verilator
 ** xref:Verilator/01_install_verilator.adoc[]
 ** xref:Verilator/02_introduce_verilator.adoc[]
