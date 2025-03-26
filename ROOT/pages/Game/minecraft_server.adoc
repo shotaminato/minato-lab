@@ -1,0 +1,145 @@
+:description: Raspberry Pi 5にMinecraftサーバーを立てる方法について記載します。
+
+= Raspberry Pi 5 (Raspbian) に Minecraft サーバー(1.21.4)を立てる方法
+
+== はじめに
+
+自宅でほこりをかぶっていたRaspberry Pi 5を引っ張り出して、Minecraftサーバー(1.21.4)を立てることにしました。この記事では、その手順を記載します。 +
+今回は、Rasbian OSを使用しています。Rasbian でのserver構築方法は、基本的には Ubuntu での方法と同じです。ただし、apt でインストールできるjavaのバージョンが古いため、別途インストールする必要があります。
+
+== 参考記事
+
+https://qiita.com/SuzuTomo2001/items/ad57238d5375b19bbd51
+
+この記事の JAVA インストール方法のみ変更します。
+
+== 検証環境
+
+* Raspberry Pi 5, 8 GB
+* Raspbian OS (debian version 12.8)
+* Minecraft server 1.21.4
+* Java 21.0.6
+
+== Install Java
+
+下記の手順で`java`をインストールします。 +
+まずは apt update でリポジトリを最新化します。
+
+[%linenums,sh]
+----
+$ sudo apt update
+----
+
+参考記事では、 `sudo apt install default-jre` で java をインストールしていますが、この方法でインストールできる java はバージョンが古く（おそらくバージョン17がインストールされる）、Minecraft server 1.21.4 を起動できません。
+そこで代わりに、BellSoft の OpenJDK ビルドである、Standard JRE をインストールします。
+
+まず、下記HPにアクセスします。
+
+====
+https://bell-sw.com/pages/downloads/#jdk-21-lts
+====
+
+ページ下部の Linux ブロックで、
+
+* Architecture: `ARM`
+* Package: `Full JRE`
+
+を選択し、 `DEB, ~~Mb` を右クリックして、リンクをコピーします。
+
+image::Game/bellsoft.png[]
+
+
+次に、Raspberry Pi 5 にログインし、以下のコマンドで JRE をインストールします。
+
+.インストールコマンド
+[%linenums,sh]
+----
+$ cd <任意のディレクトリ>
+$ wget <コピーしたリンク>
+$ sudo dpkg -i <ダウンロードされたもの>
+$ java --version
+----
+
+.コマンド例
+[%linenums,sh]
+----
+$ cd ~/Downloads
+$ wget https://download.bell-sw.com/java/21.0.6+10/bellsoft-jre21.0.6+10-linux-aarch64-full.deb
+$ sudo dpkg -i bellsoft-jre21.0.6+10-linux-aarch64-full.deb
+$ java --version
+----
+
+所望のバージョンが表示されたら成功です。(Minecraft server 1.21.4 を起動するためには、JAVA の バージョン 21.0 以上 が必要です)
+
+== Raspberry Pi 5 のポート解放
+
+Minecraft server は ポート `25565` と `25575` を使用してクライアントと通信します。そのため、Raspberry Pi 5 のポート `25565` と `25575` を解放します。
+
+[%linenums,sh]
+----
+$ sudo apt install ufw
+$ sudo ufw allow 25565
+$ sudo ufw allow 25575
+----
+
+== Minecraft Server のダウンロード
+
+Minecraft server のダウンロードと起動は、以下のコマンドで行います。
+
+下記のページにアクセスし、最新の server.jar のダウンロードリンクを取得します。
+
+====
+https://www.minecraft.net/ja-jp/download/server
+====
+
+下図のようなページが表示されますので、`Download minecraft_server.X.XX.X.jar` を右クリックして、リンクをコピーします。
+
+image::Game/minecraft_server.png[]
+
+次に、Raspberry Pi 5 にログインし、以下のコマンドを実行して、`server.jar` をダウンロードします。（無論、他の方法で `server.jar` をダウンロードして raspberry Pi 5 にアップロードしても構いません）
+
+[%linenums,sh]
+----
+$ cd <任意のディレクトリ>
+$ wget https://launcher.mojang.com/v1/objects/0a269b5f2c5b93b1712d0f5dc43b6182b9ab254e/server.jar
+----
+
+
+== Minecraft Server の初回起動
+
+Raspberry pi 5 で `server.jar`` をダウンロードしたディレクトリに移動し、以下のコマンドで Minecraft server を起動します。
+
+[%linenums,sh]
+----
+$ java -Xmx6144M -Xms6144M -jar server.jar nogui
+----
+
+これで、Minecraft server が起動しますが、初回起動時のみエラーが出て終了します。 `server.jar` 実行前に EULA に同意する必要があるためです。生成された `eula.txt` をエディタで開き、`eula=false` を `eula=true` に変更してください。
+
+.eula.txt
+[%linenums,sh]
+----
+#By changing the setting below to TRUE you are indicating your agreement to our EULA (https://aka.ms/MinecraftEULA).
+#Sun Mar 16 21:56:19 PDT 2025
+eula=true
+----
+
+以上でインストールは完了です。
+
+== Minecraft Server の起動
+
+Raspberry pi 5 を起動し、以下のコマンドで Minecraft server を起動します。
+
+[%linenums,sh]
+----
+$ cd <server.jar があるディレクトリ>
+$ java -Xmx6144M -Xms6144M -jar server.jar nogui
+----
+
+ここで、-Xmx6144M と -Xms6144M は、それぞれ最大メモリと最小メモリを指定しています。これは、Raspberry Pi 5 のメモリ容量に合わせて変更してください。
+
+== おわりに
+
+以上で、Raspberry Pi 5 に Minecraft server を立てる方法を記載しました。Minecraft server 1.21.4 を起動するためには、JAVA の バージョン 21.0 以上 が必要です。そのため、aptでインストールできる default-jre ではなく、BellSoft の OpenJDK ビルドである、Standard JRE をインストールしてください。 +
+
+ご質問等があれば、コメント欄にお願いします。
