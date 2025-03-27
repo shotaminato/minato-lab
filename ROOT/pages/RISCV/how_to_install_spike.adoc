@@ -1,0 +1,173 @@
+# RISC-V Spike のインストール
+
+## はじめに
+
+これから、RISCV の自作CPUに挑戦しようと考えています。そのために、まずは検証環境を整えます。今回は、RISC-V toolchain、Spike と RISC-V Proxy Kernel (PK) をインストールします。
+
+## 作業環境
+
+[cols="1,2"]
+|===
+| 項目 | 内容
+
+| OS
+| Windows 11 (WSL2)
+
+| WSL
+| WSL2, Ubuntu 24.04
+
+| CPU
+| Ryzen 5 5600X (x86_64)
+
+|===
+
+## 参考ページ
+
+こちらのページを参考にしました。しっかりと手順が書かれているので、とても助かりました。
+
+RISC-Vの開発環境をLinux上に構築する:: link:https://zenn.dev/ohno418/articles/5f6d5e01dc4981[https://zenn.dev/ohno418/articles/5f6d5e01dc4981^]
+
+
+## 準備
+
+以下のコマンドを実行して、ツールのインストール先を作成します。
+
+[source,bash]
+----
+cd <任意のディレクトリ>
+mkdir riscv
+export RISCV=/path/to/riscv
+export PATH=$RISCV/bin:$PATH
+----
+
+`export RISCV=/path/to/riscv` `export PATH=$RISCV/bin:$PATH` は、 `.bashrc` に追加しておくと便利です。さもなくば、ターミナルを開くたびに実行する必要があります。
+
+## riscv-gnu-toolchain
+
+まずは、riscv-gnu-toolchain をインストールします。これは、RISC-V用のクロスコンパイラです。
+
+公式リポジトリ:: link:https://github.com/riscv/riscv-gnu-toolchain[https://github.com/riscv/riscv-gnu-toolchain^]
+
+READMEに従ってインストールします。
+
+まず、必要なパッケージをインストールします。
+
+[source,bash]
+----
+$ sudo apt-get install autoconf automake autotools-dev curl python3 python3-pip python3-tomli libmpc-dev libmpfr-dev libgmp-dev gawk build-essential bison flex texinfo gperf libtool patchutils bc zlib1g-dev libexpat-dev ninja-build git cmake libglib2.0-dev libslirp-dev
+----
+
+次に、ツールをインストールします。
+
+[source,bash]
+----
+$ cd <任意のディレクトリ>
+$ git clone https://github.com/riscv/riscv-gnu-toolchain
+$ cd riscv-gnu-toolchain/
+$ ./configure --prefix=$RISCV
+$ make linux -j$(nproc)
+----
+
+特にエラーが出力されなければ、おそらく無事に完了していると思います。（警告は大量にでた）
+
+下記コマンドで、インストールされたツール群を確認してみます。
+[source,bash]
+----
+$ ls $RISCV/bin
+----
+
+結果は以下のようになりました。
+
+----
+riscv64-unknown-linux-gnu-addr2line  riscv64-unknown-linux-gnu-gcc         riscv64-unknown-linux-gnu-gdb              riscv64-unknown-linux-gnu-gprof     riscv64-unknown-linux-gnu-ranlib
+riscv64-unknown-linux-gnu-ar         riscv64-unknown-linux-gnu-gcc-14.2.0  riscv64-unknown-linux-gnu-gdb-add-index    riscv64-unknown-linux-gnu-gprofng   riscv64-unknown-linux-gnu-readelf
+riscv64-unknown-linux-gnu-as         riscv64-unknown-linux-gnu-gcc-ar      riscv64-unknown-linux-gnu-gfortran         riscv64-unknown-linux-gnu-ld        riscv64-unknown-linux-gnu-run
+riscv64-unknown-linux-gnu-c++        riscv64-unknown-linux-gnu-gcc-nm      riscv64-unknown-linux-gnu-gp-archive       riscv64-unknown-linux-gnu-ld.bfd    riscv64-unknown-linux-gnu-size
+riscv64-unknown-linux-gnu-c++filt    riscv64-unknown-linux-gnu-gcc-ranlib  riscv64-unknown-linux-gnu-gp-collect-app   riscv64-unknown-linux-gnu-lto-dump  riscv64-unknown-linux-gnu-strings
+riscv64-unknown-linux-gnu-cpp        riscv64-unknown-linux-gnu-gcov        riscv64-unknown-linux-gnu-gp-display-html  riscv64-unknown-linux-gnu-nm        riscv64-unknown-linux-gnu-strip
+riscv64-unknown-linux-gnu-elfedit    riscv64-unknown-linux-gnu-gcov-dump   riscv64-unknown-linux-gnu-gp-display-src   riscv64-unknown-linux-gnu-objcopy
+riscv64-unknown-linux-gnu-g++        riscv64-unknown-linux-gnu-gcov-tool   riscv64-unknown-linux-gnu-gp-display-text  riscv64-unknown-linux-gnu-objdump
+----
+
+64bitのriscv用クロスコンパイラや解析ツールがインストールされていますね。
+
+## Spike
+
+次に、Spikeをインストールします。
+
+公式リポジトリ:: link:https://github.com/riscv-software-src/riscv-isa-sim.git[https://github.com/riscv-software-src/riscv-isa-sim.git^]
+
+こちらも、READMEに従ってインストールします。
+
+[source,bash]
+----
+$ sudo apt install device-tree-compiler libboost-regex-dev libboost-system-dev
+$ cd <任意のディレクトリ>
+$ git clone  https://github.com/riscv-software-src/riscv-isa-sim.git
+$ cd riscv-isa-sim/
+$ mkdir build
+$ cd build
+$ ../configure --prefix=$RISCV
+$ make
+$ make install
+----
+
+注意: make は -j オプションを使用すると、エラーが出ました。おそらく、依存関係がうまく解決できていないのだと思われます。
+
+インストールが完了したら、 `ls $RISCV/bin` を実行してみてください。 新たに spike がインストールされていることが確認できます。
+
+[source,bash]
+----
+$ ls $RISCV/bin
+elf2hex                              riscv64-unknown-linux-gnu-g++         riscv64-unknown-linux-gnu-gcov-tool        riscv64-unknown-linux-gnu-gp-display-text  riscv64-unknown-linux-gnu-objdump  spike-dasm
+riscv64-unknown-linux-gnu-addr2line  riscv64-unknown-linux-gnu-gcc         riscv64-unknown-linux-gnu-gdb              riscv64-unknown-linux-gnu-gprof            riscv64-unknown-linux-gnu-ranlib   spike-log-parser
+riscv64-unknown-linux-gnu-ar         riscv64-unknown-linux-gnu-gcc-14.2.0  riscv64-unknown-linux-gnu-gdb-add-index    riscv64-unknown-linux-gnu-gprofng          riscv64-unknown-linux-gnu-readelf  termios-xspike
+riscv64-unknown-linux-gnu-as         riscv64-unknown-linux-gnu-gcc-ar      riscv64-unknown-linux-gnu-gfortran         riscv64-unknown-linux-gnu-ld               riscv64-unknown-linux-gnu-run      xspike
+riscv64-unknown-linux-gnu-c++        riscv64-unknown-linux-gnu-gcc-nm      riscv64-unknown-linux-gnu-gp-archive       riscv64-unknown-linux-gnu-ld.bfd           riscv64-unknown-linux-gnu-size
+riscv64-unknown-linux-gnu-c++filt    riscv64-unknown-linux-gnu-gcc-ranlib  riscv64-unknown-linux-gnu-gp-collect-app   riscv64-unknown-linux-gnu-lto-dump         riscv64-unknown-linux-gnu-strings
+riscv64-unknown-linux-gnu-cpp        riscv64-unknown-linux-gnu-gcov        riscv64-unknown-linux-gnu-gp-display-html  riscv64-unknown-linux-gnu-nm               riscv64-unknown-linux-gnu-strip
+riscv64-unknown-linux-gnu-elfedit    riscv64-unknown-linux-gnu-gcov-dump   riscv64-unknown-linux-gnu-gp-display-src   riscv64-unknown-linux-gnu-objcopy          spike
+----
+
+## RISC-V Proxy Kernel (PK)
+
+次に、RISC-V Proxy Kernel (PK) をインストールします。
+
+公式リポジトリ:: link:https://github.com/riscv-software-src/riscv-pk[https://github.com/riscv-software-src/riscv-pk^]
+
+下記のコマンドを実行してください。
+
+[source,bash]
+----
+$ cd <任意のディレクトリ>
+$ git clone https://github.com/riscv-software-src/riscv-pk
+$ cd riscv-pk
+$ mkdir build
+$ cd build
+$ ../configure --prefix=$RISCV --host=riscv64-unknown-linux-gnu
+$ make
+$ make install
+----
+
+公式READMEとは、--host オプションが異なります。READMEには、--host=riscv64-unknown-elf と書かれていますが、こちらは、--host=riscv64-unknown-linux-gnu としてください。
+
+
+完了後、以下のディレクトリに、PK がインストールされます。
+
+[source,bash]
+----
+$ ls $RISCV/riscv64-unknown-linux-gnu/bin/
+ar  as  bbl  dummy_payload  ld  ld.bfd  nm  objcopy  objdump  pk  ranlib  readelf  strip
+----
+
+## テスト
+
+参考ページを参照してください。。。ただしくインストールされていれば、参考ページに記載の結果と同じ結果が得られるはずです。
+
+
+
+## おわりに
+
+さて、今回は、RISC-V toolchain、Spike と RISC-V Proxy Kernel (PK) をインストールしました。といっても、ほぼ参考ページとREADMEに従って進めただけで、エラーなく完了したため、難しいことはなかったです。
+
+次回は、この環境に riscv-testsをインストールして、テストを実行してみたいと思います。

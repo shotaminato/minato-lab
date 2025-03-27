@@ -1,6 +1,11 @@
 * Home
 ** xref:Home/introduction.adoc[]
 ** xref:Home/diary.adoc[]
+* Verilator
+** xref:Verilator/01_install_verilator.adoc[]
+** xref:Verilator/02_introduce_verilator.adoc[]
+* RISC-V
+** xref:RISCV/how_to_install_spike.adoc[]
 * AsciidocとAntoraでHP自作
 ** xref:Antora/01_install_antora.adoc[]
 ** xref:Antora/02_customize_antora_page.adoc[]
@@ -8,6 +13,3 @@
 // ** xref:Antora/github_actions_note.adoc[]
 * Game
 ** xref:Game/minecraft_server.adoc[]
-* Verilator
-** xref:Verilator/01_install_verilator.adoc[]
-** xref:Verilator/02_introduce_verilator.adoc[]
