@@ -45,7 +45,7 @@ def main():
                         write_line = f':revdate: {modified_timestamp}\n'
 
                     if line[0:2] == "= " or line[0:2] == "# ":
-                        write_line = "\n" + line + "\n\n[.text-right]\n投稿日：{postdate} +\n最終更新日：{revdate}\n\n"
+                        write_line = "\n" + line + "\n\n[.text-right]\n投稿日：{postdate} &#160;&#160;&#160;&#160; 最終更新日：{revdate}\n\n"
                 
                     # Append the processed content to the list
                     processed_content.append(write_line)
