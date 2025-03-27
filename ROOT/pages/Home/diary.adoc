@@ -1,11 +1,22 @@
 :description: アメリカでのエンジニア生活をのんびり記録。仕事のことも日常のことも、気ままに書いています。
-
+:sectnums!:
 = 日記
 
+== 2025-03-27
+
+本日も記事を更新しました。本日は、RISC-V ISA シミュレーターの spike 周りのインストール方法について記載しました。ただし、ほぼ参考ページ通りの手順なので、特に新しい情報はありません。
+
+記事:: xref:RISCV/how_to_install_spike.adoc[]
+
+次回以降に、この環境を用いたriscv-testsの実行方法について記載したいと思います。これが完了したら、改めて自作CPUの検証環境の検討に移りたいと思います。
+
 == 2025-03-26
+
 また更新が止まってしまいました。本日妻と日課を頑張る宣言をしたので、なるべく続けたいです。ただ、仕事が四月までは忙しそうです。
 
 本日は、Minecraft の サーバー を Rasbian を搭載した Raspberry Pi 5 に立てる方法を記事にしました。Raspberry Pi 5 は、最新の Raspberry Pi です。Rasbian は、Debian 12.8 がベースの OS です。Minecraft サーバーのバージョンは 1.21.4 です。Java は 21.0.6 を使用しています。 
+
+記事:: xref:Game/minecraft_server.adoc[]
 
 Rasbian の apt でインストールできる Java のバージョンが古いため、別途インストールする必要があります。記事では、BellSoft の OpenJDK ビルドである、Standard JRE をインストールする方法を記載しています。
 
