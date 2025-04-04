@@ -1,0 +1,37 @@
+:description: このページでは、riscv-tests のビルド方法と、spike での実行方法について説明します。riscv-tests は、自作の RISCV-CPU シミュレーター、RTLの検証に使用することができるテストベンチです。
+
+# riscv-tests のインストール方法
+
+##  ビルド方法
+
+riscv-tests は、riscv-gnu-toolchain をビルドした後に、ビルドする必要があります。 +
+riscv-gnu-toolchain のビルドは xref:RISCV/how_to_install_spike.adoc[] を参照してください。 +
+ビルド時のコマンドは、 `make linux` ではなく、 `make` を実行してください。さもないと必要なコンパイラがビルドされません。`make linux` を実行しても構いませんが、linux用のコンパイラがビルドされます。riscv-tests では ベアメタル用のelf形式のバイナリをビルドするため、linux用のコンパイラは必要ありません。 +
+
+[source,bash]
+----
+$ git clone https://github.com/riscv/riscv-tests
+$ cd riscv-tests
+$ git submodule update --init --recursive
+$ autoconf
+$ ./configure --prefix=$RISCV/target
+$ make
+$ make install
+----
+
+## Spike での実行方法
+
+下記のコマンドで実行できます。riscv-testsをビルドすると、`$RISCV/target/share/riscv-tests/isa` にテストがインストールされます。RISC-V の形式ごとに様々なテストがインストールされているので、そのうち一つを選んで、spikeに渡してください。 +
+また、spike を実行する際は、 `--isa` オプションを指定する必要があります。`--isa` オプションは、テストを実行するISAシミュレーターのISAを指定します。実行するテストによって適宜変更してください。 +
+
+.実行コマンド
+[source,bash]
+----
+spike -l --isa=RV64I ${RISCV}/target/share/riscv-tests/isa/<テスト名>
+----
+
+.Example
+[source,bash]
+----
+spike -l --isa=RV64I ${RISCV}/target/share/riscv-tests/isa/rv64ui-p-add
+----

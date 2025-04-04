@@ -6,6 +6,7 @@
 ** xref:Verilator/02_introduce_verilator.adoc[]
 * RISC-V
 ** xref:RISCV/how_to_install_spike.adoc[]
+** xref:RISCV/how_to_build_riscv_tests.adoc[]
 * AsciidocとAntoraでHP自作
 ** xref:Antora/01_install_antora.adoc[]
 ** xref:Antora/02_customize_antora_page.adoc[]
