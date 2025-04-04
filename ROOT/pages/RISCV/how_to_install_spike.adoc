@@ -1,3 +1,5 @@
+:description: このページでは、RISC-V Spike および、riscv-gnu-toolchain と RISC-V Proxy Kernel のインストール方法について説明します。Spikeは、RISC-V ISAのシミュレーターです。RTL検証や、自作命令セットの検証に使用することができます。riscv-gnu-toolchainは、RISC-V用のクロスコンパイラです。RISC-V Proxy Kernel (PK) は、RISC-V用のプロキシカーネルです。これらをインストールすることで、RISC-Vの開発環境を整えることができます。
+
 # RISC-V Spike のインストール
 
 ## はじめに
@@ -65,8 +67,10 @@ $ cd <任意のディレクトリ>
 $ git clone https://github.com/riscv/riscv-gnu-toolchain
 $ cd riscv-gnu-toolchain/
 $ ./configure --prefix=$RISCV
-$ make linux -j$(nproc)
+$ make -j$(nproc)
 ----
+
+`make linux` ではなく、 `make` であることに注意してください。riscv-tests のビルドに影響します。 
 
 特にエラーが出力されなければ、おそらく無事に完了していると思います。（警告は大量にでた）
 
@@ -76,20 +80,6 @@ $ make linux -j$(nproc)
 $ ls $RISCV/bin
 ----
 
-結果は以下のようになりました。
-
-----
-riscv64-unknown-linux-gnu-addr2line  riscv64-unknown-linux-gnu-gcc         riscv64-unknown-linux-gnu-gdb              riscv64-unknown-linux-gnu-gprof     riscv64-unknown-linux-gnu-ranlib
-riscv64-unknown-linux-gnu-ar         riscv64-unknown-linux-gnu-gcc-14.2.0  riscv64-unknown-linux-gnu-gdb-add-index    riscv64-unknown-linux-gnu-gprofng   riscv64-unknown-linux-gnu-readelf
-riscv64-unknown-linux-gnu-as         riscv64-unknown-linux-gnu-gcc-ar      riscv64-unknown-linux-gnu-gfortran         riscv64-unknown-linux-gnu-ld        riscv64-unknown-linux-gnu-run
-riscv64-unknown-linux-gnu-c++        riscv64-unknown-linux-gnu-gcc-nm      riscv64-unknown-linux-gnu-gp-archive       riscv64-unknown-linux-gnu-ld.bfd    riscv64-unknown-linux-gnu-size
-riscv64-unknown-linux-gnu-c++filt    riscv64-unknown-linux-gnu-gcc-ranlib  riscv64-unknown-linux-gnu-gp-collect-app   riscv64-unknown-linux-gnu-lto-dump  riscv64-unknown-linux-gnu-strings
-riscv64-unknown-linux-gnu-cpp        riscv64-unknown-linux-gnu-gcov        riscv64-unknown-linux-gnu-gp-display-html  riscv64-unknown-linux-gnu-nm        riscv64-unknown-linux-gnu-strip
-riscv64-unknown-linux-gnu-elfedit    riscv64-unknown-linux-gnu-gcov-dump   riscv64-unknown-linux-gnu-gp-display-src   riscv64-unknown-linux-gnu-objcopy
-riscv64-unknown-linux-gnu-g++        riscv64-unknown-linux-gnu-gcov-tool   riscv64-unknown-linux-gnu-gp-display-text  riscv64-unknown-linux-gnu-objdump
-----
-
-64bitのriscv用クロスコンパイラや解析ツールがインストールされていますね。
 
 ## Spike
 
@@ -116,18 +106,6 @@ $ make install
 
 インストールが完了したら、 `ls $RISCV/bin` を実行してみてください。 新たに spike がインストールされていることが確認できます。
 
-[source,bash]
-----
-$ ls $RISCV/bin
-elf2hex                              riscv64-unknown-linux-gnu-g++         riscv64-unknown-linux-gnu-gcov-tool        riscv64-unknown-linux-gnu-gp-display-text  riscv64-unknown-linux-gnu-objdump  spike-dasm
-riscv64-unknown-linux-gnu-addr2line  riscv64-unknown-linux-gnu-gcc         riscv64-unknown-linux-gnu-gdb              riscv64-unknown-linux-gnu-gprof            riscv64-unknown-linux-gnu-ranlib   spike-log-parser
-riscv64-unknown-linux-gnu-ar         riscv64-unknown-linux-gnu-gcc-14.2.0  riscv64-unknown-linux-gnu-gdb-add-index    riscv64-unknown-linux-gnu-gprofng          riscv64-unknown-linux-gnu-readelf  termios-xspike
-riscv64-unknown-linux-gnu-as         riscv64-unknown-linux-gnu-gcc-ar      riscv64-unknown-linux-gnu-gfortran         riscv64-unknown-linux-gnu-ld               riscv64-unknown-linux-gnu-run      xspike
-riscv64-unknown-linux-gnu-c++        riscv64-unknown-linux-gnu-gcc-nm      riscv64-unknown-linux-gnu-gp-archive       riscv64-unknown-linux-gnu-ld.bfd           riscv64-unknown-linux-gnu-size
-riscv64-unknown-linux-gnu-c++filt    riscv64-unknown-linux-gnu-gcc-ranlib  riscv64-unknown-linux-gnu-gp-collect-app   riscv64-unknown-linux-gnu-lto-dump         riscv64-unknown-linux-gnu-strings
-riscv64-unknown-linux-gnu-cpp        riscv64-unknown-linux-gnu-gcov        riscv64-unknown-linux-gnu-gp-display-html  riscv64-unknown-linux-gnu-nm               riscv64-unknown-linux-gnu-strip
-riscv64-unknown-linux-gnu-elfedit    riscv64-unknown-linux-gnu-gcov-dump   riscv64-unknown-linux-gnu-gp-display-src   riscv64-unknown-linux-gnu-objcopy          spike
-----
 
 ## RISC-V Proxy Kernel (PK)
 
@@ -144,19 +122,18 @@ $ git clone https://github.com/riscv-software-src/riscv-pk
 $ cd riscv-pk
 $ mkdir build
 $ cd build
-$ ../configure --prefix=$RISCV --host=riscv64-unknown-linux-gnu
+$ ../configure --prefix=$RISCV --host=riscv64-unknown-elf
 $ make
 $ make install
 ----
 
-公式READMEとは、--host オプションが異なります。READMEには、--host=riscv64-unknown-elf と書かれていますが、こちらは、--host=riscv64-unknown-linux-gnu としてください。
 
 
 完了後、以下のディレクトリに、PK がインストールされます。
 
 [source,bash]
 ----
-$ ls $RISCV/riscv64-unknown-linux-gnu/bin/
+$ ls $RISCV/riscv64-unknown-elf/bin/
 ar  as  bbl  dummy_payload  ld  ld.bfd  nm  objcopy  objdump  pk  ranlib  readelf  strip
 ----
 
