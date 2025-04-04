@@ -2,7 +2,13 @@
 
 # riscv-tests のインストール方法
 
-##  ビルド方法
+## はじめに
+
+riscv-testsは、RISC-Vのプロセッサ向けのユニットテストやベンチマークテストのセットです。 +
+自分の実装したRISC-V CoreがRISC-VのISAに準拠した命令セットアーキテクチャを持っているかを検証するために使用されます。（ただし、すべての命令のテストを網羅しているわけではないようです。） +
+
+
+## ビルド方法
 
 riscv-tests は、riscv-gnu-toolchain をビルドした後に、ビルドする必要があります。 +
 riscv-gnu-toolchain のビルドは xref:RISCV/how_to_install_spike.adoc[] を参照してください。 +
