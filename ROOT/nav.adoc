@@ -1,5 +1,5 @@
 * Home
-** xref:Home/introduction.adoc[]
+** xref:index.adoc[]
 ** xref:Home/diary.adoc[]
 * Verilator
 ** xref:Verilator/01_install_verilator.adoc[]
