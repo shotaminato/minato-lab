@@ -1,5 +1,6 @@
 site:
   title: Minato Lab.
+  start_page: minato-lab::index.adoc
   url: https://minato-lab.com
 content:
   sources:
