@@ -24,11 +24,12 @@ image::Home/IMG_4372.JPEG[width=60%]
 * Tunnel View
 
 Tunnel Viewは、ヨセミテ国立公園の中でも特に有名な展望台です。ヨセミテグッズにもここからの景色がよく描かれています。El Capitan や Half Dome などの有名な岩山が一望できます。絶対に訪れるべき場所です。
-image::Home/IMG_4725.JPEG[width=60%]
+
+image::Home/IMG_4725.JPEG[width=80%]
 
 * ほか
 
-image::Home/IMG_4466.JPEG[width=60%]
+image::Home/IMG_4466.JPEG[width=80%]
 
 == 2025-04-15
 
