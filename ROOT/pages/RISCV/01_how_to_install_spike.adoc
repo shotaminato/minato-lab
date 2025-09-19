@@ -1,6 +1,6 @@
 :description: このページでは、RISC-V Spike および、riscv-gnu-toolchain と RISC-V Proxy Kernel のインストール方法について説明します。Spikeは、RISC-V ISAのシミュレーターです。RTL検証や、自作命令セットの検証に使用することができます。riscv-gnu-toolchainは、RISC-V用のクロスコンパイラです。RISC-V Proxy Kernel (PK) は、RISC-V用のプロキシカーネルです。これらをインストールすることで、RISC-Vの開発環境を整えることができます。
 
-# RISC-V Spike のインストール
+# RISC-V Toolchain, Spike, Proxy Kernel のインストール
 
 ## はじめに
 

@@ -11,7 +11,7 @@ riscv-testsは、RISC-Vのプロセッサ向けのユニットテストやベン
 ## ビルド方法
 
 riscv-tests は、riscv-gnu-toolchain をビルドした後に、ビルドする必要があります。 +
-riscv-gnu-toolchain のビルドは xref:RISCV/how_to_install_spike.adoc[] を参照してください。 +
+riscv-gnu-toolchain のビルドは xref:RISCV/01_how_to_install_spike.adoc[] を参照してください。 +
 ビルド時のコマンドは、 `make linux` ではなく、 `make` を実行してください。さもないと必要なコンパイラがビルドされません。`make linux` を実行しても構いませんが、linux用のコンパイラがビルドされます。riscv-tests では ベアメタル用のelf形式のバイナリをビルドするため、linux用のコンパイラは必要ありません。 +
 
 [source,bash]
