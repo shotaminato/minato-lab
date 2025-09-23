@@ -1,6 +1,6 @@
 :description: このページでは、riscv-tests のビルド方法と、spike での実行方法について説明します。riscv-tests は、自作の RISCV-CPU シミュレーター、RTLの検証に使用することができるテストベンチです。
 
-# riscv-tests のインストール方法
+# riscv-tests のインストール
 
 ## はじめに
 
