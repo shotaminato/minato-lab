@@ -1,0 +1,136 @@
+:description: このページでは、RISC-Vのelf形式のバイナリをhex形式に変換する方法について説明します。
+
+# 検証用入力ファイルの作成（ELF->HEX変換）
+
+## はじめに
+
+自作CPUの検証のために、RISCV-Test を使用します。これまでに、RISC-V Test のELF形式のバイナリをビルドする方法について解説しました。
+
+* RISCV-Test ビルド方法の解説記事: xref:RISCV/02_how_to_build_riscv_tests.adoc[]
+
+このELF形式のバイナリをシミュレーションに入力できるようにするためには、HEX形式に変換する必要があります。本記事ではこの方法について解説します。
+
+## ELF -> BIN 変換
+
+まずは、ELF形式のバイナリをBIN形式に変換します。
+riscv-toolchain には、`objcopy` というコマンドがあり、これを使用します。
+
+[source,bash]
+----
+riscv64-unknown-elf-objcopy -O binary <ELFファイル> <BINファイル>
+----
+
+## BIN -> HEX 変換
+
+次に、BIN形式のバイナリをHEX形式に変換します。
+
+[source,bash]
+----
+od -An -tx1 -w1 -v <BINファイル> <HEXファイル>
+----
+
+.od コマンドのオプション
+|===
+| オプション | 説明
+
+| -An      | プログラムのアドレスを非表示にします。
+| -tx1     | 変換形式をx1（1 Byte 単位で16進数に変換）に設定します。
+| -w1      | 1行あたりの Byte 数を設定します。-w1 だと 1 Byteです。
+| -v       | 連続データの省略を無効化します。
+|===
+
+## 変換結果の例
+
+作成したHEXファイルを開くと、以下のようなデータが確認できます。
+
+.hexファイルの例(rv64ui-p-add)
+[source,text]
+----
+ 6f
+ 00
+ 00
+ 05
+ 73
+ 2f
+ 20
+ 34
+ ...
+----
+
+objdump コマンドで ELF ファイルを逆アセンブルすると以下のような結果が出力されます。
+
+.objdump コマンドの結果(rv64ui-p-add)
+[source,text]
+----
+0000000000000000 <_start>:
+   0:	0500006f          	j	50 <reset_vector>
+
+0000000000000004 <trap_vector>:
+   4:	34202f73          	csrr	t5,mcause
+   8:	00800f93          	li	t6,8
+   c:	03ff0863          	beq	t5,t6,3c <write_tohost>
+  10:	00900f93          	li	t6,9
+  14:	03ff0463          	beq	t5,t6,3c <write_tohost>
+...
+----
+
+HEXファイルとobjdumpの結果が一致していることが確認できます。
+
+## 変換スクリプト
+
+以上の方法をすべてのELFファイルに対して行うのは大変です。
+そこで、一括で実行するためのスクリプトを作成しました。
+
+
+.elf2hex.py
+[source,python]
+----
+####################################################################################
+## 入出力ディレクトリの設定
+####################################################################################
+INPUT_ISA_DIR   :str = "/home/user_name/HOME/tool/riscv/repo/riscv-tests/isa"
+OUTPUT_BIN_DIR  :str = "/home/user_name/HOME/repo/SvRiscV/tb/riscv-tests/bin"
+OUTPUT_HEX_DIR  :str = "/home/user_name/HOME/repo/SvRiscV/tb/riscv-tests/hex"
+OUTPUT_DUMP_DIR :str = "/home/user_name/HOME/repo/SvRiscV/tb/riscv-tests/dump"
+RISCV_DIR       :str = "/home/user_name/HOME/tool/riscv"
+
+####################################################################################
+## Main スクリプト
+####################################################################################
+import os
+
+def main():
+
+    set_env_command :str = f"export RISCV={RISCV_DIR}; export PATH=$RISCV/bin:$PATH;"
+
+    os.makedirs(OUTPUT_BIN_DIR, exist_ok=True)
+    os.makedirs(OUTPUT_HEX_DIR, exist_ok=True)
+    os.makedirs(OUTPUT_DUMP_DIR, exist_ok=True)
+
+    for file in os.listdir(INPUT_ISA_DIR):
+        file_path = os.path.join(INPUT_ISA_DIR, file)
+        if file.endswith(".dump"):
+            continue
+        if os.path.isdir(file_path):
+            continue
+        if not file.startswith("rv"):
+            continue
+
+        print(file_path)
+        output_bin_path = os.path.join(OUTPUT_BIN_DIR, file + ".bin")
+        output_hex_path = os.path.join(OUTPUT_HEX_DIR, file + ".hex")
+        output_dump_path = os.path.join(OUTPUT_DUMP_DIR, file + ".dump")
+        os.system(f"{set_env_command} riscv64-unknown-elf-objcopy -O binary {file_path} {output_bin_path}")
+        os.system(f"od -An -tx1 -w1 -v {output_bin_path} > {output_hex_path}")
+        os.system(f"{set_env_command} riscv64-unknown-elf-objdump -d {file_path} > {output_dump_path}")
+
+if __name__ == "__main__":
+    main()
+----
+
+入力ディレクトリ、出力ディレクトリを変更して、以下のコマンドを実行してください。
+
+[source,bash]
+----
+python3 elf2hex.py
+----
