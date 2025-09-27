@@ -1,0 +1,165 @@
+:description: 
+
+# Ubuntu で スリープ（Suspend）できない問題の解決方法
+
+## 概要
+
+筆者は現在、Ubuntu 24.04 で作業しています。この環境で、スリープ（Suspend）できない問題が発生して、解決方法がわかったので、共有します。
+
+
+## 問題
+
+スリープ（Suspend）ボタンをクリックすると、一時的にスリープ状態に移行するが、その後すぐにスリープから復帰してしまう。
+
+
+## 原因
+
+一部のUSBデバイスから常に復帰信号が送信されていました。
+
+## 解決方法
+
+該当のUSBデバイス経由でのスリープ復帰を、無効にします。 +
+（この設定後にスリープ復帰したいときは、別のUSBデバイスを使用するか、電源ボタンを押して復帰します。）
+
+### 解決手順
+
+#### Ubuntu に登録されているスリープ復帰トリガーの確認と原因の特定
+
+以下のコマンドを実行して、復帰トリガーを確認します。
+
+.復帰トリガーの確認
+[source,bash]
+----
+$ grep . /sys/bus/usb/devices/*/power/wakeup
+----
+
+.結果例
+[source,bash]
+----
+/sys/bus/usb/devices/1-2.2.2/power/wakeup:enabled
+/sys/bus/usb/devices/1-2.2.3/power/wakeup:enabled
+/sys/bus/usb/devices/1-2.2/power/wakeup:disabled
+/sys/bus/usb/devices/1-2/power/wakeup:disabled
+/sys/bus/usb/devices/1-6/power/wakeup:disabled
+/sys/bus/usb/devices/3-6/power/wakeup:disabled
+/sys/bus/usb/devices/usb1/power/wakeup:disabled
+/sys/bus/usb/devices/usb2/power/wakeup:disabled
+/sys/bus/usb/devices/usb3/power/wakeup:disabled
+/sys/bus/usb/devices/usb4/power/wakeup:disabled
+/sys/bus/usb/devices/usb5/power/wakeup:disabled
+----
+
+
+このうち、enabled のものが復帰トリガーです。この場合は、
+
+* `/sys/bus/usb/devices/1-2.2.2/power/wakeup`
+* `/sys/bus/usb/devices/1-2.2.3/power/wakeup` 
+
+が復帰トリガーとなっていますね。
+
+次に、これらがどのデバイスなのかを確認します。
+
+.デバイスの確認
+[source,bash]
+----
+$ grep . /sys/bus/usb/devices/*/product
+----
+
+結果は以下のようになります。
+
+.結果例
+[source,bash]
+----
+/sys/bus/usb/devices/1-2.1/product:NS1081
+/sys/bus/usb/devices/1-2.2.2/product:USB Receiver
+/sys/bus/usb/devices/1-2.2.3/product:USB Receiver
+/sys/bus/usb/devices/1-2.2/product:USB2.0 Hub
+/sys/bus/usb/devices/1-2.4/product:BUFFALO Optical Drive
+/sys/bus/usb/devices/1-2/product:USB2.0 Hub
+/sys/bus/usb/devices/1-6/product:Wireless_Device
+/sys/bus/usb/devices/3-4/product:Stream Deck Pedal
+/sys/bus/usb/devices/3-6/product:AURA LED Controller
+/sys/bus/usb/devices/4-3/product:Steinberg UR22C
+/sys/bus/usb/devices/usb1/product:xHCI Host Controller
+/sys/bus/usb/devices/usb2/product:xHCI Host Controller
+/sys/bus/usb/devices/usb3/product:xHCI Host Controller
+/sys/bus/usb/devices/usb4/product:xHCI Host Controller
+/sys/bus/usb/devices/usb5/product:xHCI Host Controller
+/sys/bus/usb/devices/usb6/product:xHCI Host Controller
+----
+
+ここで、復帰トリガーとなっているものを探すと、両方USB Receiverでした。 
+
+[source,bash]
+----
+/sys/bus/usb/devices/1-2.2.2/product:USB Receiver
+/sys/bus/usb/devices/1-2.2.3/product:USB Receiver
+----
+
+どうやら、キーボードとマウスのUSBレシーバーが復帰トリガーとして登録されているようです。
+
+ここまでわかったら、思い当たるUSB機器を抜いたり指したりして、スリープ（Suspend）を試してみます。
+
+私の場合、キーボード（1-2.2.3）を抜いてスリープ（Suspend）を試したところ、正常にスリープ状態に移行したため、これが原因とわかりました。
+
+
+
+
+#### 復帰トリガーの無効化
+
+復帰トリガーからその原因となったUSBデバイスを除外します。
+
+除外する方法は、`/sys/bus/usb/devices/＜上記で特定したデバイス番号＞/power/wakeup` ファイルを開いて、編集するだけです。
+
+.例 (/sys/bus/usb/devices/1-2.2.3/power/wakeup)
+----
+enabled
+----
+
+これを disabled に書き換えます。sudo 権限が必要です。
+
+sudo 権限でエディタを開いて以下のようにして下さい。
+
+.書き換え後 (/sys/bus/usb/devices/1-2.2.3/power/wakeup)
+----
+disabled
+----
+
+もしくは、以下のコマンドを実行すればよいです。
+
+[source,bash]
+----
+$ echo disabled | sudo tee /sys/bus/usb/devices/＜上記で特定したデバイス番号＞/power/wakeup
+----
+
+完了したら、スリープ（Suspend）を試してみて、正常にスリープ状態に移行するかを確かめます。
+
+もしできなかった場合は、ファイルの書き換えが正しく完了していることを確認して、パソコンを再起動してください。
+
+
+
+## 参考
+
+### 参考記事
+
+こちらの記事を参考にさせていただきました。ありがとうございます。
+
+link:https://zenn.dev/uji/scraps/6b0abb71009fa7[Ubuntu 使い始めてやったことメモ^]
+
+
+### 作業環境
+
+[cols="1,2"]
+|===
+| 項目 | 内容
+
+| OS
+| Ubuntu 24.04 LTS
+
+| CPU
+| Ryzen 5 5600X (x86_64)
+
+| GPU
+| NVIDIA GeForce RTX 3060
+
+|===
